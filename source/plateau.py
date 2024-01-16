@@ -378,7 +378,7 @@ def directions_possibles(plateau,pos,passemuraille=False):
 
 
 def analyse_plateau(plateau, pos, direction, distance_max):
-    """calcul les distances entre la position pos est les différents objets et
+    """calcul les distances entre la position pos, les différents objets et
         joueurs du plateau si on commence par partir dans la direction indiquée
         en se limitant à la distance max. Si il n'est pas possible d'aller dans la
         direction indiquée à partir de pos, la fonction doit retourner None
@@ -396,7 +396,45 @@ def analyse_plateau(plateau, pos, direction, distance_max):
             S'il n'est pas possible d'aller dans la direction indiquée à partir de pos
             la fonction retourne None
     """ 
-    pass
+    res = {}
+    cpt = 0
+    if distance_max<=0:
+        return None
+    while cpt != distance_max:
+        if direction is 'N':
+            pos = pos_nord(plateau,pos)
+            if get_objet(plateau,pos) != None:
+                res['objets']=[pos,get_objet(plateau,pos)]
+            if get_case(plateau,pos)['pacmans_presents'] != None:
+                res['pacmans']=[pos,get_case(plateau,pos)['pacmans_presents']]
+            if get_case(plateau,pos)['fantomes_presents'] != None:
+                res['fantomes']=[pos,get_case(plateau,pos)['fantomes_presents']]
+        elif direction is 'S':
+            pos = pos_sud(plateau,pos)
+            if get_objet(plateau,pos) != None:
+                res['objets']=[pos,get_objet(plateau,pos)]
+            if get_case(plateau,pos)['pacmans_presents'] != None:
+                res['pacmans']=[pos,get_case(plateau,pos)['pacmans_presents']]
+            if get_case(plateau,pos)['fantomes_presents'] != None:
+                res['fantomes']=[pos,get_case(plateau,pos)['fantomes_presents']]
+        elif direction is 'E':
+            pos = pos_est(plateau,pos)
+            if get_objet(plateau,pos) != None:
+                res['objets']=[pos,get_objet(plateau,pos)]
+            if get_case(plateau,pos)['pacmans_presents'] != None:
+                res['pacmans']=[pos,get_case(plateau,pos)['pacmans_presents']]
+            if get_case(plateau,pos)['fantomes_presents'] != None:
+                res['fantomes']=[pos,get_case(plateau,pos)['fantomes_presents']]
+        elif direction is 'O':
+            pos = pos_ouest(plateau,pos)
+            if get_objet(plateau,pos) != None:
+                res['objets']=[pos,get_objet(plateau,pos)]
+            if get_case(plateau,pos)['pacmans_presents'] != None:
+                res['pacmans']=[pos,get_case(plateau,pos)['pacmans_presents']]
+            if get_case(plateau,pos)['fantomes_presents'] != None:
+                res['fantomes']=[pos,get_case(plateau,pos)['fantomes_presents']]
+        cpt += 1
+    return res
 
 def prochaine_intersection(plateau,pos,direction):
     """calcule la distance de la prochaine intersection
@@ -411,9 +449,26 @@ def prochaine_intersection(plateau,pos,direction):
         int: un entier indiquant la distance à la prochaine intersection
              -1 si la direction mène à un cul de sac.
     """
-    
-    pass
-
+    deplacement = True
+    cpt = -1
+    while deplacement:
+        for direct in directions_possibles(plateau,pos,passemuraille=False):
+            if direct == direction:
+                if direction is 'N':
+                    pos = pos_nord(plateau,pos)
+                    cpt+=1
+                elif direction is 'S':
+                    pos = pos_sud(plateau,pos)
+                    cpt+=1
+                elif direction is 'E':
+                    pos = pos_est(plateau,pos)
+                    cpt+=1
+                elif direction is 'O':
+                    pos = pos_ouest(plateau,pos)
+                    cpt+=1
+        if direction not in directions_possibles(plateau,pos,passemuraille=False):
+            deplacement = False
+    return cpt
 # A NE PAS DEMANDER
 def plateau_2_str(plateau):
         res = str(get_nb_lignes(plateau))+";"+str(get_nb_colonnes(plateau))+"\n"
