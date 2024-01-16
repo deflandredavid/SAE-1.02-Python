@@ -143,7 +143,8 @@ def poser_pacman(case, pacman):
     if pacmans_set is None:
         pacmans_set = set()
     if not est_mur(case):
-        #il manque or pour le cas ou pacman est dans un mur avec le pass muraille
+        pacmans_set.add(pacman)
+    if joueur.get_duree(pacman,"PASSEMURAILLE") > 0 :
         pacmans_set.add(pacman)
     case["pacmans_presents"] = pacmans_set
 
